@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Select Box</title>
+	<!-- <link rel="stylesheet" type="text/css" href="styling.css"> -->
+	<style type="text/css">
+		html{
+			background-color: orange;
+			padding: 20px;
+		}
+		#h1{
+			text-align: center;
+			font-size: 80px;
+		}
+		form{
+			font-size: 40px;
+			text-align:center;
+		}
+		input{
+			font-size: 40px;
+			text-align: center;
+		}
+		#distt, #city{
+			font-size: 30px;
+			text-align: left;
+			margin: 20px;
+			/*border: r: 1px solid orange;*/
+		}
+		select {
+			width: 400px;
+			border: 2px solid orange;
+		}
+		button{
+			height: 40px;
+			width: 400px;
+			border: 2px solid orange;
+			background-color: white;
+		}
+		#output{
+			font-size: 30px;
+			font-weight: bold;
+			background-color: white;
+			/*text-align: left;*/
+			color: orange;	
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-bottom: 20px;
+			margin-top: 20px;
+			text-align: center;
+		}
+		#output h1{
+		}
+		footer{
+			text-align: center;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<h1 id="h1">Get details by Pincode</h1>
+		<form>
+			Enter pincode: <br><input type="text" name="pincode" id="pin">
+			<br><br>
+			<input type="button" name="btn" id="btn" onclick="getDetails()" value="Search">
+		</form>
+			<div id="output">
+				<h1>Your Results</h1><br>
+				City <br> <select id="city"></select>
+			<br>
+				District <br> <button id="distt"></button>
+				<br>
+				<input type="button" name="btn" id="btn" onclick="submitInfo()" value="Submit">
+			</div>
+
+	</div>
+	<footer>
+		Disigned and Devloped by: Rupali
+	</footer>
+</body>
+<script type="text/javascript">
+	function getDetails() {
+		let p = document.getElementById('pin').value;
+		let pc = Number(p);
+		let city;
+		let distt;
+		let state;
+		if(pc == ' '){
+			return false;
+		}
+		else{
+			const url = "https://api.postalpincode.in/pincode/"+pc; //by name
+			fetch(url).then((response)=>{
+				return response.json();
+			}).then((data)=>{
+				if(data[0]==null || data[0]==0){
+					alert("wrong input");
+				}
+				else{
+					let c = document.getElementById('city');
+					let d = document.getElementById('distt');
+					for(let i =0; i<50; i++){
+						user = data[0].PostOffice[i];
+						c.options[c.options.length] = new Option(user.Name);
+						d.innerHTML = (user.District);
+					}
+				}
+
+			})
+		}
+	}
+	getDetails();
+
+	function submitInfo() {
+		alert("Your details has been submitted successfully.")
+	}
+</script>
+</html>

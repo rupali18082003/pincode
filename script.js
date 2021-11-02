@@ -1,9 +1,13 @@
+const cities = document.getElementById('city');
+const distt = document.getElementById('distt');
+const state = document.getElementById('state');
+const region = document.getElementById('region');
+const pcd = document.getElementById('pc');
+const block = document.getElementById('block');
+
 function getDetails() {
 		let p = document.getElementById('pin').value;
 		let pc = Number(p);
-		let city;
-		let distt;
-		let state;
 		if(pc == ' '){
 			return false;
 		}
@@ -18,19 +22,21 @@ function getDetails() {
 					throw new Error("Invalid Input")
 				}
 				else{
-					let c = document.getElementById('city');
-					let d = document.getElementById('distt');
-					for(let i =0; i<50; i++){
+					const len = data[0].PostOffice.length;
+					document.getElementById('pin').value = '';
+					for(let i =0; i<len; i++){
 						user = data[0].PostOffice[i];
-						c.options[c.options.length] = new Option(user.Name);
-						d.innerHTML = (user.District);
-
-
+						pcd.textContent = user.Pincode;
+						cities.options[cities.options.length] = new Option(user.Name);
+						block.textContent = user.Block;
+						distt.textContent = user.District;
+						region.textContent = user.Region;
+						state.textContent = user.State;
 					}
 				}
 
 			})
-			.catch(err => alert(err))
+			.catch(err => console.log(err))
 		
 		}
 	}
